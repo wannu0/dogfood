@@ -1,14 +1,17 @@
 // components/FoodCard.tsx
 import { useState } from "react";
 import type { FC } from "react";
-import type { Food } from "../types";
+import type { Food, GroupedFood, Variant } from "../types";
 import FeatureIcons from "./FeatureIcons";
+import Carousel from "./Carousel";
+import FoodList from "../FoodList";
 
 type Props = {
-  food: Food;
-  dailyGrams?: number;
-  pricePerDay?: string;
-  daysPerBag?: number;
+  //food: Food;
+  groupedFood: GroupedFood;
+  //dailyGrams?: number;
+  //pricePerDay?: string;
+  //daysPerBag?: number;
   selectedFood: Food | null;
   setSelectedFood: (f: Food) => void;
 };
@@ -26,21 +29,42 @@ function shouldShowUserStatus(
 }
 
 const FoodCard: FC<Props> = ({
-  food,
-  dailyGrams,
-  pricePerDay,
-  daysPerBag,
+  groupedFood,
+  //food,
+  //dailyGrams,
+  //pricePerDay,
+  //daysPerBag,
   setSelectedFood,
 }) => {
-  food.isHighProtein = food.nutrients.protein >= 29;
+  //今見せてるバリエーションのindex（※フードブランド内のバリエーション。ポルトリー/サーモンとか）
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const food = groupedFood.foods[currentIndex]; //フード単種（ポチのポルトリー）がfoodに入る。
 
-  const [isExpanded, setIsExpanded] = useState(false);
-  const largestVariant = food.variants.reduce((a, b) =>
-    a.weight > b.weight ? a : b
-  );
+  //variantsはfood.variantsにある：ここで一番大きな容量の価格/kgを計算
+  const largestVariant = food.variants.reduce((a,b)=>
+  a.weight > b.weight ? a:b);
   const pricePerKg = Math.round(
     (largestVariant.price / largestVariant.weight) * 1000
   );
+
+  const goNext = (e:React.MouseEvent) => {
+    e.stopPropagation();
+    const next = (currentIndex+1) % groupedFood.foods.length;
+    //いまのindex+1を長さで割ったあまり
+    //たとえば5種類あったとして、2番目を表示＝index1していたら
+    //1+1 % 5 = 2 …つまり、一番最後の時だけあまりが「0」になる→nextがindex0になってループする
+    setCurrentIndex(next);
+  };
+
+  const goPrev = (e:React.MouseEvent) =>{
+    e.stopPropagation();
+    const prev = (currentIndex-1 + groupedFood.foods.length) % groupedFood.foods.length;
+    setCurrentIndex(prev);
+  };
+
+  //food.isHighProtein = food.nutrients.protein >= 29;
+
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <div
@@ -53,24 +77,47 @@ const FoodCard: FC<Props> = ({
       }}
       onClick={() => setSelectedFood(food)}
     >
+
+      {/* ブランド名共通部分 */}
         <div className="min-h-[3.5rem] flex flex-col justify-center items-center text-center mb-2">
             <h2
               className={`font-noto font-bold leading-snug ${
-              food.name.length >= 15 ? "text-base" : "text-xl"
+              groupedFood.name.length >= 15 ? "text-base" : "text-xl"
             }`}>
-                {food.name}
+                {groupedFood.name}
             </h2>
             <p className="font-noto font-normal text-cardBaseFont_pale text-sm leading-none">
                 {food.name_sub}
             </p>
         </div>
+      
+      {/* カルーセル */}
+      {/*
+      <Carousel foods={groupedFood.foods} />
+      */}
 
-      <div className="relative" style={{ backgroundColor: "#fff" }}>
+
+      
+      {/* 画像+スライド矢印 */}
+      <div className="relative mb-2" style={{ backgroundColor: "#fff" }}>
         <img
           src={`/images/${food.imgsrc}.png`}
-          alt={food.name}
+          alt={food.name_sub}
           className="rounded-md w-auto h-[160px] object-contain mx-auto transition-transform duration-300 group-hover:scale-105"
         />
+      {groupedFood.foods.length > 1 &&(
+        <>
+          <button
+            onClick={goPrev}
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-1"
+            >◀</button>
+          <button
+            onClick={goNext}
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white bg-opacity-80 rounded-full p-1"
+          >▶</button>
+        </>
+      )}
+
         {/* 画像にコメントを重ねる場合
         <p className="absolute bottom-0 left-0 bg-white bg-opacity-80 text-xs px-2 py-1 rounded-tr-md w-full">
           {food.comment}
@@ -154,7 +201,10 @@ const FoodCard: FC<Props> = ({
       </ul>
       </div>
 
-      {/* 任意表示（ユーザー指定時） */}
+          {/* -------------うちのこ情報------------- */}
+
+      {/*
+      
       {shouldShowUserStatus(dailyGrams, pricePerDay, daysPerBag) && (
         <div className="bg-[#EFEFEF] rounded-md p-2 text-sm">
           <p className="flex items-center gap-1 font-bold text-teal-800">
@@ -169,6 +219,9 @@ const FoodCard: FC<Props> = ({
           </p>
         </div>
       )}
+
+       */}
+
     </div>
   );
 };

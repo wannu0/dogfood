@@ -1,6 +1,6 @@
-import type { Food } from "../types";
+import type { Food, Nutrients } from "../types";
 
-export function calcNutrientAverages(foods:Food[]){
+export function calcNutrientAverages(foods:Food[]): Nutrients{
     const sum: Record<string, number> = {};
     const count: Record<string, number> = {};
 
@@ -20,5 +20,5 @@ export function calcNutrientAverages(foods:Food[]){
     for (const key in sum){
         avg[key] = sum[key] / (count[key] ?? 1);
     }
-    return avg; // 例：{ protein: 25.3, fat: 8.7, ... }
+    return avg as Nutrients; // 例：{ protein: 25.3, fat: 8.7, ... }
 }

@@ -1,4 +1,5 @@
 // types.ts
+
 export type Stage =
   | "成犬_去勢済"
   | "成犬_未去勢"
@@ -12,6 +13,61 @@ export type Variant = {
   price: number;  // 円
 };
 
+//成分ごとの情報
+export type Nutrient = {
+    key: string;     // ← 新規追加（"protein" など）
+    name: string; //タンパク質など
+    value:number;
+    unit?:string;
+    threshold?:number;
+    thresholdLabel?:string;
+    compare?:"above"|"below";
+};
+
+//フードに含まれる成分の情報
+export type Nutrients = {
+  protein: number;
+  fat: number;
+  fiber:number;
+  ash:number;
+  water:number;
+};
+
+//平均値の情報
+export type NutrientAverage = {
+  protein: number;
+  fat: number;
+  fiber: number;
+  ash: number;
+  water: number;
+};
+
+//フードごとの情報（味）
+export type Food = {
+  name_sub : string;
+  imgsrc:string;
+  comment:string;
+  kcal:number;
+  isOrganic:boolean;
+  isGrainFree:boolean;
+  ingredients:string;
+  note:string;
+  country:string;
+  nutrients:Nutrients;
+  nutrients_sub:string;
+  variants:Variant[]; //量のバリエーション（小袋〜大袋）
+  isDomestic:boolean;
+};
+
+//フードブランドごとのセット
+export type GroupedFood = {
+  id:number;
+  name:string;
+  foods: Food[];
+};
+
+
+/*
 export type Food = {
   name: string;
   name_sub?: string;
@@ -34,13 +90,5 @@ export type Food = {
   note?: string;
   variants: Variant[];
 };
+*/
 
-export type Nutrient = {
-    key: string;     // ← 新規追加（"protein" など）
-    name: string; //タンパク質など
-    value:number;
-    unit?:string;
-    threshold?:number;
-    thresholdLabel?:string;
-    compare?:"above"|"below";
-};
