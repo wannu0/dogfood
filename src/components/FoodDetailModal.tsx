@@ -1,18 +1,21 @@
 //FoodDetailModal.tsx
 
 import { useEffect } from "react";
-import type { Food } from "../types";
+import type { Food, SelectedFood } from "../types";
 import FeatureIcons from "./FeatureIcons";
 import NutrientChart from "./NutrientChart";
 
 
 type Props = {
-  food: Food;
+  selectedFood: SelectedFood;
   onClose: () => void;  
   nutrientAvg: Record<string, number>;  //平均値オブジェクト
 };
 
-export default function FoodDetailModal({food,onClose,nutrientAvg}:Props){
+export default function FoodDetailModal({selectedFood,onClose,nutrientAvg}:Props){
+
+    const food = selectedFood.food;
+    const foodGroup = selectedFood.groupedFood;
 
     useEffect(()=>{
         const handleKeyDown = (e:KeyboardEvent) => {
@@ -67,7 +70,7 @@ export default function FoodDetailModal({food,onClose,nutrientAvg}:Props){
                 <div className="flex flex-col">
                     {/* タイトル（最上部） */}
                     <div className="flex flex-col gap-1 pb-2 mb-1 border-b-2 border-borderBeige">
-                        <h2 className="text-2xl font-bold text-center">{food.name}</h2>
+                        <h2 className="text-2xl font-bold text-center">{foodGroup.name}</h2>
                         {food.name_sub && (<p className="text-sm text-center">{food.name_sub}</p>)}
                     </div>
 
@@ -76,7 +79,7 @@ export default function FoodDetailModal({food,onClose,nutrientAvg}:Props){
                     <div className="flex flex-row w-full space-y-2">
                         {/* ひだりがわ：縦並び */}
                         <div className="flex flex-col w-2/5 items-center justify-center p-2">
-                            <img src={`/images/${food.imgsrc}.png`} alt={food.name} className="w-[150px] m-4" />
+                            <img src={`/images/${food.imgsrc}.png`} alt={foodGroup.name} className="w-[150px] m-4" />
                             <div><FeatureIcons food={food} /></div>
                             <div className="pt-3">
                             <ul className={food.variants.length < 3 ? "text-sm":"text-xs"}>

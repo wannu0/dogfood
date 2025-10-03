@@ -5,7 +5,7 @@ import FoodList from './FoodList'
 import Sidebar from "./Sidebar";
 import FoodDetailModal from "./components/FoodDetailModal";
 import { calcNutrientAverages } from "./utils/calcNutrients";
-import type { Stage, GroupedFood, Food, Nutrients } from "./types";
+import type { Stage, GroupedFood, Food, Nutrients, SelectedFood } from "./types";
 
 //GroupedFood[]からすべてのFood[]を抽出
 const foods: GroupedFood[] = groupedFoods;
@@ -20,13 +20,13 @@ export default function App() {
   const [isOrganic, setIsOrganic]=useState(false);
   const [isDomestic, setIsDomestic]=useState(false);
 
-  const [selectedFood, setSelectedFood] = useState<Food | null>(null);
+  const [selectedFood, setSelectedFood] = useState<SelectedFood | null>(null);
   //const nutrientAvg = calcNutrientAverages(foods);  //平均値を計算
 
   return (
     <div className="flex min-h-screen">
     {/* サイドバー */}
-    {/*
+    
       <Sidebar
       stage={stage}
       setStage={setStage}
@@ -35,12 +35,12 @@ export default function App() {
       isOrganic={isOrganic}
       setIsOrganic={setIsOrganic}
       />
-     */}
+     
 
     {/* モーダル */}
     {selectedFood && (
       <FoodDetailModal
-      food={selectedFood}
+      selectedFood={selectedFood}
       onClose={()=> setSelectedFood(null)}
       nutrientAvg = {nutrientAvg}
       />

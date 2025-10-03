@@ -1,5 +1,5 @@
 import foods from "./data/foods.json";
-import type { Stage, GroupedFood,Food,Nutrients } from "./types";
+import type { Stage, GroupedFood,Food,Nutrients,SelectedFood } from "./types";
 import { calcDER } from "./utils/calories";
 import FoodCard from "./components/FoodCard";
 
@@ -11,8 +11,8 @@ type Props = {
   idealWeight: number | undefined;
   isOrganic: boolean;
   isDomestic: boolean;
-  selectedFood: Food | null;
-  setSelectedFood: (f:Food)=>void;
+  selectedFood: SelectedFood | null;
+  setSelectedFood: (f:SelectedFood)=>void;
 };
 
 const FoodList = ({ groupedFoods, stage, idealWeight, isOrganic, isDomestic, selectedFood, setSelectedFood }: Props) => {

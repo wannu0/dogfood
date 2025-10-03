@@ -24,7 +24,7 @@ export type Nutrient = {
     compare?:"above"|"below";
 };
 
-//フードに含まれる成分の情報
+//フードに含まれる成分の情報　※たぶん使ってない
 export type Nutrients = {
   protein: number;
   fat: number;
@@ -65,6 +65,12 @@ export type GroupedFood = {
   name:string;
   foods: Food[];
 };
+
+//モーダルにわたす情報
+export type SelectedFood = {
+  food: Food;
+  groupedFood: GroupedFood;
+}
 
 
 /*
