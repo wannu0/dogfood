@@ -1,17 +1,30 @@
 //Sidebar.tsx
 
-import type { Stage } from "./types";
+import type { Stage,MyPet } from "./types";
 
 type Props = {
-    stage:Stage;
-    setStage:(s:Stage)=>void;
-    idealWeight:number | undefined;
-    setIdealWeight:(w:number)=>void;
+    myPet: MyPet | undefined;
+    setMyPet:(p:MyPet)=>void;
     isOrganic: boolean;
     setIsOrganic: (o: boolean) => void;
 };
 
-export default function Sidebar({ stage, setStage, idealWeight, setIdealWeight, isOrganic, setIsOrganic }: Props){
+export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic }: Props){
+
+    const handleStageChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
+        setMyPet({
+            weightKg: myPet?.weightKg ?? 0,
+            stage: e.target.value as Stage,
+        });
+    };
+
+    const handleWeightChange = (e:React.ChangeEvent<HTMLInputElement>)=>{
+        setMyPet({
+            weightKg: Number(e.target.value),
+            stage: myPet?.stage ?? "成犬_去勢済", // デフォルト値
+        });
+    };
+
     return(
         <aside className="bg-[#D0E1E8] text-[#193F5F] w-full max-w-xs p-6 space-y-6 shadow-md">
             {/* うちのこ情報 */}
@@ -23,8 +36,8 @@ export default function Sidebar({ stage, setStage, idealWeight, setIdealWeight, 
                 <label className="block text-sm mb-2">
                     ライフステージ：
                     <select 
-                    value={stage}
-                    onChange={(e)=>setStage(e.target.value as Stage)}
+                    value={myPet?.stage ?? ""}
+                    onChange={handleStageChange}
                     className="mt-1 p-2 w-full rounded text-black">
                         <option>選択してください</option>
                         <option value="成犬_去勢済">成犬：去勢(避妊)済み</option>
@@ -43,8 +56,8 @@ export default function Sidebar({ stage, setStage, idealWeight, setIdealWeight, 
                     type="number"
                     className="mt-1 p-2 w-full rounded text-black"
                     placeholder="例：5.5"
-                    value={idealWeight ?? ""}
-                    onChange={(e)=>setIdealWeight(Number(e.target.value))}
+                    value={myPet?.weightKg ?? ""}
+                    onChange={handleWeightChange}
                 />
                 </label>
             </section>

@@ -19,6 +19,7 @@ export default {
         mordalSubInfo: "#D6D3D1",
         avgLine: "#C2BBB5",
         chartLine: "#78716B",
+        chartMedian: "#D89FBD",
         modalBaseFont: "#312821",
         modalBaseFont_pale: "#78716B",
         cardBaseFont: "#312821",
@@ -29,6 +30,8 @@ export default {
       fontFamily:{
         kosugi : ["Kosugi", "sans-serif"],
         noto : ["Noto Sans JP", "sans-serif"],
+        crimson : ["Crimson Text", "sans-serif"],
+        roboto : ["Roboto", "sans-serif"],
       },
       keyframes: {
         growBar: {

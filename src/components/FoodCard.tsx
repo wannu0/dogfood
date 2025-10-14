@@ -1,19 +1,35 @@
 import { useState } from "react";
 import type { FC } from "react";
-import type { Food, GroupedFood, SelectedFood } from "../types";
+import type { Food, GroupedFood, SelectedFood, MyPet } from "../types";
 import { motion } from "framer-motion";
 import FeatureIcons from "./FeatureIcons";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { calcDER } from "../utils/calories";
 
 type Props = {
+  myPet? : MyPet;
   groupedFood: GroupedFood;
   selectedFood: SelectedFood | null;
   setSelectedFood: (f: SelectedFood) => void;
 };
 
-const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood }) => {
+const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood, myPet }) => {
   const [index, setIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
   const food = groupedFood.foods[index];
+
+
+  //最大パッケージ------
+  const largestVariant = food.variants.reduce((a, b) =>
+    a.weight > b.weight ? a : b
+  );
+  //const pricePerKg = Math.round((largestVariant.price / largestVariant.weight) * 1000);
+  //うちのこ情報を計算
+  const der = myPet ? calcDER(myPet.weightKg, myPet.stage) : undefined;
+  const dailyGrams = der && food.kcal ? Math.floor((der / food.kcal) * 100) : undefined;
+  const daysPerBag = dailyGrams && dailyGrams > 0 ? Math.floor(largestVariant.weight / dailyGrams) : undefined;
+  const pricePerDay = daysPerBag && daysPerBag > 0 ? Math.floor(largestVariant.price / daysPerBag) : undefined;
+
 
   const next = () => setIndex((i) => (i + 1) % groupedFood.foods.length);
   const prev = () => setIndex((i) => (i - 1 + groupedFood.foods.length) % groupedFood.foods.length);
@@ -21,11 +37,15 @@ const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood }) => 
   return (
     <div
       className="font-kosugi bg-white text-cardBaseFont rounded-2xl p-3 w-[300px] min-h-[400px]
-       max-w-sm mx-auto flex flex-col transition transform hover:-translate-y-2 hover:shadow-lg group cursor-pointer"
+        max-w-sm mx-auto flex flex-col transition-all duration-300 cursor-pointer"
       style={{
-        boxShadow: "0 4px 8px rgba(0,0,0,0.1), 0 -4px 8px rgba(0,0,0,0.1)",
+        boxShadow: isHovered
+          ? "0 6px 16px rgba(0,0,0,0.2), 0 -6px 16px rgba(0,0,0,0.2)"
+          : "0 4px 8px rgba(0,0,0,0.1), 0 -4px 8px rgba(0,0,0,0.1)",
       }}
-      onClick={() => setSelectedFood({food, groupedFood})}
+      onClick={() => setSelectedFood({ food, groupedFood })}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       {/* タイトル部分 */}
       <div className="h-[3.5rem] flex flex-col justify-center items-center text-center mb-2">
@@ -47,6 +67,7 @@ const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood }) => 
       <div className="relative w-full h-[170px] overflow-hidden">
         {groupedFood.foods.map((f, i) => {
           const isActive = i === index;
+
           return (
             <motion.div
               key={i}
@@ -99,6 +120,16 @@ const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood }) => 
       <div className="border border-cardBaseFont_pale text-xs text-cardBaseFont_pale rounded-[3px] mt-4 p-2 h-[5rem]">
         <div className="line-clamp-4 overflow-hidden">{food.comment}</div>
       </div>
+
+      {myPet && (
+        <div className="mt-4 text-sm bg-gray-100 p-2 rounded">
+          <p>うちのこに必要量：{dailyGrams}g / 日</p>
+          <p>1袋で約 {daysPerBag} 日分</p>
+          <p>1日あたり約 {pricePerDay?.toLocaleString()}円
+            <span className="text-xs text-cardBaseFont_palemore">{food.variants.length > 1 && (" ※最大パッケージ")}</span>
+          </p>
+        </div>
+      )}
 
       {groupedFood.foods.length > 1 && (
         <div className="mt-2 flex justify-center space-x-2">

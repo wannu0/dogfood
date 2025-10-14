@@ -7,8 +7,6 @@ type Props = {
     setStage:(s:Stage)=>void;
     idealWeight:number | undefined;
     setIdealWeight:(w:number)=>void;
-//  weight: number;
-//  setWeight: (w: number) => void;
     isOrganic: boolean;
     setIsOrganic: (o: boolean) => void;
 };

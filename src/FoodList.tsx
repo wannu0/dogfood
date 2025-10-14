@@ -1,5 +1,5 @@
 import foods from "./data/foods.json";
-import type { Stage, GroupedFood,Food,Nutrients,SelectedFood } from "./types";
+import type { Stage, GroupedFood,Food,Nutrients,SelectedFood, MyPet } from "./types";
 import { calcDER } from "./utils/calories";
 import FoodCard from "./components/FoodCard";
 
@@ -7,6 +7,7 @@ type Props = {
   //foods: GroupedFood[];
   groupedFoods:GroupedFood[];
   nutrientAvg:Nutrients;
+  myPet: MyPet | undefined;
   stage: Stage;
   idealWeight: number | undefined;
   isOrganic: boolean;
@@ -15,9 +16,9 @@ type Props = {
   setSelectedFood: (f:SelectedFood)=>void;
 };
 
-const FoodList = ({ groupedFoods, stage, idealWeight, isOrganic, isDomestic, selectedFood, setSelectedFood }: Props) => {
+const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, selectedFood, setSelectedFood }: Props) => {
 
-  const showUserInfo = idealWeight ? idealWeight > 0 : false; //入力の有無を管理する
+  const showUserInfo = myPet?.weightKg ? myPet.weightKg > 0 : false; //入力の有無を管理する
   const der = idealWeight ? calcDER(idealWeight, stage) : 0; //まず必要カロリーを計算
   //const foodsDisplay = isOrganic ? foods.filter((f) => f.isOrganic) : foods;
 
@@ -30,7 +31,7 @@ const FoodList = ({ groupedFoods, stage, idealWeight, isOrganic, isDomestic, sel
 
   return (
     <div className="container mx-auto px-4">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {filteredGroups.map((group, index) => {
 
           //最大パッケージ------
@@ -55,6 +56,7 @@ const FoodList = ({ groupedFoods, stage, idealWeight, isOrganic, isDomestic, sel
               //key={index}
               key={group.id}
               groupedFood={group}
+              myPet={myPet}
               //food={food}
               //dailyGrams={showUserInfo ? dailyGrams : undefined}
               //pricePerDay={showUserInfo ? pricePerDay : undefined}

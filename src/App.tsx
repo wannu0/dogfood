@@ -4,17 +4,21 @@ import {useState} from "react";
 import FoodList from './FoodList'
 import Sidebar from "./Sidebar";
 import FoodDetailModal from "./components/FoodDetailModal";
-import { calcNutrientAverages } from "./utils/calcNutrients";
-import type { Stage, GroupedFood, Food, Nutrients, SelectedFood } from "./types";
+import { calcNutrientAverages, calcNutrientMedians } from "./utils/calcNutrients";
+import type { Stage, GroupedFood, Food, Nutrients, SelectedFood, MyPet } from "./types";
 
 //GroupedFood[]からすべてのFood[]を抽出
 const foods: GroupedFood[] = groupedFoods;
 //すべてをallFoods配列に格納
 const allFoods: Food[] = foods.flatMap(group => group.foods);
-//平均値の計算
+//平均値と中央値の計算
 const nutrientAvg = calcNutrientAverages(allFoods)  as Nutrients;
+const nutrientMedian = calcNutrientMedians(allFoods) as Nutrients;
 
 export default function App() {
+  //うちのこ情報
+  const [myPet, setMyPet] = useState<MyPet | undefined>(undefined);
+  //いらなくなるかも
   const [stage, setStage]=useState<Stage>("成犬_去勢済");
   const [idealWeight, setIdealWeight]=useState<number | undefined>(undefined);
   const [isOrganic, setIsOrganic]=useState(false);
@@ -23,15 +27,14 @@ export default function App() {
   const [selectedFood, setSelectedFood] = useState<SelectedFood | null>(null);
   //const nutrientAvg = calcNutrientAverages(foods);  //平均値を計算
 
+
   return (
     <div className="flex min-h-screen">
     {/* サイドバー */}
     
       <Sidebar
-      stage={stage}
-      setStage={setStage}
-      idealWeight={idealWeight}
-      setIdealWeight={setIdealWeight}
+      myPet={myPet}
+      setMyPet={setMyPet}
       isOrganic={isOrganic}
       setIsOrganic={setIsOrganic}
       />
@@ -41,8 +44,10 @@ export default function App() {
     {selectedFood && (
       <FoodDetailModal
       selectedFood={selectedFood}
+      setSelectedFood= {setSelectedFood}
       onClose={()=> setSelectedFood(null)}
       nutrientAvg = {nutrientAvg}
+      nutrientMedian={nutrientMedian}
       />
     )}
 
@@ -53,6 +58,7 @@ export default function App() {
       <FoodList
       groupedFoods={groupedFoods}
       nutrientAvg = {nutrientAvg}
+      myPet = {myPet}
       stage={stage}
       idealWeight={idealWeight}
       isOrganic={isOrganic}

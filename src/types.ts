@@ -42,9 +42,15 @@ export type NutrientAverage = {
   water: number;
 };
 
+export type MyPet = {
+  weightKg: number;
+  stage: Stage;
+};
+
 //フードごとの情報（味）
 export type Food = {
   name_sub : string;
+  food_id : string;
   imgsrc:string;
   comment:string;
   kcal:number;
