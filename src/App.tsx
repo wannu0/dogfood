@@ -5,7 +5,7 @@ import FoodList from './FoodList'
 import Sidebar from "./Sidebar";
 import FoodDetailModal from "./components/FoodDetailModal";
 import { calcNutrientAverages, calcNutrientMedians } from "./utils/calcNutrients";
-import type { Stage, GroupedFood, Food, Nutrients, SelectedFood, MyPet } from "./types";
+import type { Stage, GroupedFood, Food, Nutrients, SelectedFood, MyPet } from "./types/types";
 
 //GroupedFood[]からすべてのFood[]を抽出
 const foods: GroupedFood[] = groupedFoods;

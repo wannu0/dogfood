@@ -1,7 +1,7 @@
 //Carousel.tsx
 import { useState, type FC } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import type { Food } from "../types";
+import type { Food } from "../types/types";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import FeatureIcons from "./FeatureIcons";
 

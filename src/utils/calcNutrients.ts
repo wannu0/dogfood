@@ -1,6 +1,6 @@
 //calcNutrients.ts
 
-import type { Food, Nutrients } from "../types";
+import type { Food, Nutrients } from "../types/types";
 
 export function calcNutrientAverages(foods:Food[]): Nutrients{
     const sum: Record<string, number> = {};

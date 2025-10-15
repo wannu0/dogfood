@@ -1,5 +1,5 @@
 //utils/calories.ts
-import type { Stage } from "../types";
+import type { Stage } from "../types/types";
 
 //理想体重からRERを計算
 export function calcRER(weightKg:number):number{

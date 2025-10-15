@@ -1,0 +1,102 @@
+[
+  {
+    "id": "acana",
+    "name": "アカナ（Acana）",
+    "logo": "/images/brands/acana-logo.png",
+    "concept": "高タンパク・低炭水化物で、生物学的に適正な食事を目指すカナダ産フード",
+    "description": "原材料にこだわり、放し飼いの鶏肉や天然魚、新鮮な野菜を使って地元カナダの自社工場で製造。穀物不使用・人工添加物不使用で、犬の自然な食事を再現しています",
+    "originCountry": "カナダ",
+    "manufacturer": "Champion Petfoods",
+    "distributor": "有限会社 AFJ",
+    "productLineups": [
+      "クラシック",
+      "ハイエストプロテイン",
+      "シングル"
+    ],
+    "featuredProducts": [
+      {
+        "id": "01701",
+        "name_sub": "アダルトドッグレシピ",
+        "imgsrc": "acana_adultdog"
+      }
+    ],
+    "websiteUrl": "https://acana.net/",
+    "notes": "",
+    "isDomestic": false
+  },
+  {
+    "id": "orijen",
+    "name": "オリジン",
+    "logo": "/images/brands/orijen-logo.png",
+    "concept": "高タンパク・低炭水化物で、生物学的に適正な食事を目指すカナダ産フード",
+    "description": "アカナよりもさらに肉や魚などの動物性原材料の割合が高く、最大90%を配合。ハイグレードな素材にこだわったフード。",
+    "originCountry": "カナダ",
+    "manufacturer": "Champion Petfoods",
+    "distributor": "有限会社 AFJ",
+    "productLineups": [
+      "オリジナル",
+      "ツンドラドッグ",
+      "レジオナルレッドドッグ"
+    ],
+    "featuredProducts": [
+      {
+        "id": "01001",
+        "name_sub": "",
+        "imgsrc": "orijen_ori"
+      }
+    ],
+    "websiteUrl": "https://acana.net/",
+    "notes": "",
+    "isDomestic": false
+  },
+  {
+    "id": "pochi",
+    "name": "POCHI ザ・ドッグフード",
+    "logo": "/images/brands/pochi-logo.png",
+    "concept": "トッピングフレンドリーな程よい栄養バランスの総合栄養食ドライフード",
+    "description": "「家族同様、犬の健康も毎日の食事から」と考える、愛犬をわが子のように思える人のためのドッグフードです。",
+    "originCountry": "日本",
+    "manufacturer": "不明(製造国；オランダ)",
+    "distributor": "マーケティングパートナー株式会社",
+    "productLineups": [
+      "ベーシック",
+      "エイジングケア",
+      "食事療法食"
+    ],
+    "featuredProducts": [
+      {
+        "id": "00501",
+        "name_sub": "3種のポルトリー",
+        "imgsrc": "pochi"
+      }
+    ],
+    "websiteUrl": "https://www.pochi.co.jp/",
+    "notes": "AAFCO、FEDIAF推奨のオールライフステージを対象とした総合栄養食基準に適合",
+    "isDomestic": true
+  },
+  {
+    "id": "nutrience",
+    "name": "ニュートリエンス",
+    "logo": "/images/brands/nutrience-logo.png",
+    "concept": "完璧な品質管理を志向するカナダのブリティッシュコロンビア州に所在する自社工場で製造されたプレミアムなペットフード",
+    "description": "カナダの大自然から生まれたペットフードを通じて、私たちは貴方の大切な家族の一員が元気に育ち、健康を維持するためのお手伝いをします。",
+    "originCountry": "カナダ",
+    "manufacturer": "Hagen社",
+    "distributor": "トライカラーパートナーズ株式会社",
+    "productLineups": [
+      "グレインフリー",
+      "インフュージョン",
+      "サブゼロ"
+    ],
+    "featuredProducts": [
+      {
+        "id": "02801",
+        "name_sub": "ヘルシーアダルト チキン",
+        "imgsrc": "nutrience_infusion_chicken"
+      }
+    ],
+    "websiteUrl": "https://nutrience.jp/",
+    "notes": "",
+    "isDomestic": false
+  }
+]

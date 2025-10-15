@@ -1,5 +1,5 @@
 // utils/calcPFC.ts
-import type { Food } from "../types";
+import type { Food } from "../types/types";
 
 export function calcPFC(
   food: Food,

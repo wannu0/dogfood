@@ -1,6 +1,6 @@
 //DogFoodCalculator.tsx
 //import { useState } from "react";
-import type { Stage } from "./types";
+import type { Stage } from "./types/types";
 
 type Props = {
     stage:Stage;

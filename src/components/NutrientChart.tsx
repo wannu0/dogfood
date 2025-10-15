@@ -1,6 +1,6 @@
 //NutrientChart.tsx
 
-import type { Nutrient } from "../types";
+import type { Nutrient } from "../types/types";
 
 type Props = {
     nutrients: Nutrient[];

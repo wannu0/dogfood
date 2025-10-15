@@ -1,6 +1,6 @@
 //Sidebar.tsx
 
-import type { Stage,MyPet } from "./types";
+import type { Stage,MyPet } from "./types/types";
 
 type Props = {
     myPet: MyPet | undefined;

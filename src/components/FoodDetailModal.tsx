@@ -3,7 +3,7 @@
 import { useEffect,useState } from "react";
 import React from "react";
 import { motion } from "framer-motion";
-import type { Food, SelectedFood, GroupedFood } from "../types";
+import type { Food, SelectedFood, GroupedFood } from "../types/types";
 import { calcPFC } from "../utils/calcPFC";
 import FeatureIcons from "./FeatureIcons";
 import NutrientChart from "./NutrientChart";

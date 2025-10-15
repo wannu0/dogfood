@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FC } from "react";
-import type { Food, GroupedFood, SelectedFood, MyPet } from "../types";
+import type { Food, GroupedFood, SelectedFood, MyPet } from "../types/types";
 import { motion } from "framer-motion";
 import FeatureIcons from "./FeatureIcons";
 import { ChevronLeft, ChevronRight } from "lucide-react";

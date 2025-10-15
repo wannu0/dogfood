@@ -1,6 +1,6 @@
 //FoodListModal.tsx
 import { useEffect, useRef, useState } from "react";
-import type { Food, GroupedFood, SelectedFood } from "../types";
+import type { Food, GroupedFood, SelectedFood } from "../types/types";
 import FeatureIcons from "./FeatureIcons";
 
 interface Props {

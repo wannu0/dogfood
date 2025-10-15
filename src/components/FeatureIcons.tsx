@@ -1,4 +1,4 @@
-import type { Food } from "../types";
+import type { Food } from "../types/types";
 
 type Props = {
     food:Food;

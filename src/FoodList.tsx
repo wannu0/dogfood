@@ -1,5 +1,5 @@
 import foods from "./data/foods.json";
-import type { Stage, GroupedFood,Food,Nutrients,SelectedFood, MyPet } from "./types";
+import type { Stage, GroupedFood,Food,Nutrients,SelectedFood, MyPet } from "./types/types";
 import { calcDER } from "./utils/calories";
 import FoodCard from "./components/FoodCard";
 
