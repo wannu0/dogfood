@@ -104,21 +104,15 @@ export default function FoodDetailModal({selectedFood,setSelectedFood, onClose,n
                         {/* ページャー */}
                         <div>
                         {foods.length > 1 && currentIndex > 0 && (
-                            <button
-                            className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-20 z-50"
-                            onClick={goPrev}
-                            >
-                            <ChevronLeft size={48} className="text-white" />
-                            </button>
+                            <div className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-24 z-50 bg-opacity-0" onClick={goPrev} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") goPrev(); }}>
+                                <ChevronLeft size={96} className="text-white" />
+                            </div>
                         )}
 
                         {foods.length > 1 && currentIndex < foods.length - 1 && (
-                            <button
-                            className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-20 z-50"
-                            onClick={goNext}
-                            >
-                            <ChevronRight size={48} className="text-white" />
-                            </button>
+                            <div className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-24 z-50 bg-opacity-0" onClick={goNext} role="button" tabIndex={0} onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") goNext(); }}>
+                            <ChevronRight size={96} className="text-white" />
+                            </div>
                         )}
                         </div>
 
