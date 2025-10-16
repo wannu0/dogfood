@@ -74,6 +74,7 @@ export default function FoodDetailModal({selectedFood,setSelectedFood, onClose,n
     const goNext = () => setCurrentIndex((i)=>(i+1)%foods.length);
     const goPrev = () => setCurrentIndex((i)=>(i-1+foods.length)%foods.length);
 
+
     return(
         <div className="fixed inset-0 flex items-center justify-center z-50 text-modalBaseFont">
 
@@ -91,6 +92,7 @@ export default function FoodDetailModal({selectedFood,setSelectedFood, onClose,n
                     />
                 ):(
                 //詳細モード
+
                 <div>
                     <div className="fixed inset-0 bg-black bg-opacity-50" onClick={onClose}></div>
             
@@ -99,6 +101,26 @@ export default function FoodDetailModal({selectedFood,setSelectedFood, onClose,n
                         <button onClick={onClose} className="absolute text-lg -top-10 -right-10 bg-white text-gray-700 rounded-full shadow-md w-8 h-8 flex items-center justify-center hover:bg-gray-100">
                             ✕
                         </button>
+                        {/* ページャー */}
+                        <div>
+                        {foods.length > 1 && currentIndex > 0 && (
+                            <button
+                            className="absolute top-1/2 left-0 transform -translate-y-1/2 -translate-x-20 z-50"
+                            onClick={goPrev}
+                            >
+                            <ChevronLeft size={48} className="text-white" />
+                            </button>
+                        )}
+
+                        {foods.length > 1 && currentIndex < foods.length - 1 && (
+                            <button
+                            className="absolute top-1/2 right-0 transform -translate-y-1/2 translate-x-20 z-50"
+                            onClick={goNext}
+                            >
+                            <ChevronRight size={48} className="text-white" />
+                            </button>
+                        )}
+                        </div>
 
 
                         <div className="flex flex-col">
@@ -182,42 +204,3 @@ export default function FoodDetailModal({selectedFood,setSelectedFood, onClose,n
     );
 }
 
-/*
-
-<div className="relative p-2">
-                        <h2 className="text-xl font-bold text-center mb-4">{groupedFood.name}</h2>
-                        <div className="relative flex items-center">
-                            <button onClick={goPrev} className="absolute left-0 z-10 p-2 text-gray-600 hover:text-black">
-                                 <ChevronLeft className="w-6 h-6" />
-                            </button>
-                            <div className="overflow-hidden w-full">
-                                <div className="flex transition-transform duration-300"
-                                style={{transform:`translateX(-${currentIndex * 100}%)`}}>
-                                    {foods.map((f,i)=>(
-                                        <div key={f.food_id}
-                                        className="flex-shrink-0 w-full px-2 cursor-pointer"
-                                        onClick={()=>setIsDetailMode(true)}>
-                                            <div className="p-4 border rounded-lg shadow-sm bg-white flex flex-col items-center">
-                                                <img
-                                                src={`/images/${f.imgsrc}.png`}
-                                                alt={f.name_sub}
-                                                className="h-[140px] object-contain mb-2"
-                                                />
-                                                <div className="text-lg font-bold text-center">{groupedFood.name}</div>
-                                                {f.name_sub && (
-                                                    <div className="text-sm text-gray-500 text-center">{f.name_sub}</div>
-                                                )}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <button
-                                onClick={goNext}
-                                className="absolute right-0 z-10 p-2 text-gray-600 hover:text-black"
-                            >
-                                <ChevronRight className="w-6 h-6" />
-                            </button>
-                        </div>
-                    </div>
-*/
