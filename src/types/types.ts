@@ -80,29 +80,8 @@ export type SelectedFood = {
   groupedFood: GroupedFood;
 }
 
-
-/*
-export type Food = {
-  name: string;
-  name_sub?: string;
-  comment?: string;
-  imgsrc: string;
-  kcal: number;
-  ingredients?: string;
-  country?: string;
-  isOrganic: boolean;
-  isGrainFree: boolean;
-  isHighProtein?: boolean;
-  isDomestic: boolean;
-  nutrients: {
-    protein: number;
-    fat: number;
-    fiber: number;
-    ash: number;
-    water: number;
-  };
-  note?: string;
-  variants: Variant[];
+//中身はselectedfoodと同じだけど名前を変更
+export type FoodWithGroup = {
+  food: Food;
+  groupedFood: GroupedFood;
 };
-*/
-

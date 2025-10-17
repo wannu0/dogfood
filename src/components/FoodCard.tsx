@@ -1,7 +1,7 @@
 //FoodCard.tsx
 import { useState } from "react";
 import type { FC } from "react";
-import type { Food, GroupedFood, SelectedFood, MyPet } from "../types/types";
+import type { FoodWithGroup, MyPet, ViewMode } from "../types/types";
 import { motion } from "framer-motion";
 import FeatureIcons from "./FeatureIcons";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,22 +9,28 @@ import { calcDER } from "../utils/calories";
 
 type Props = {
   myPet? : MyPet;
-  groupedFood: GroupedFood;
-  selectedFood: SelectedFood | null;
-  setSelectedFood: (f: SelectedFood) => void;
+  foodWithGroup: FoodWithGroup;
+  activeFood: FoodWithGroup | null;
+  setActiveFood: (f:FoodWithGroup)=>void;
+  viewMode: ViewMode;
 };
 
-const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood, myPet }) => {
+const FoodCard: FC<Props> = ({ foodWithGroup, setActiveFood, myPet, viewMode }) => {
   const [index, setIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const food = groupedFood.foods[index];
+  const {groupedFood} = foodWithGroup;
+  //foodはviewModeによって変わる
+  const food = 
+    viewMode === "grouped"
+    ? groupedFood.foods[index]
+    : foodWithGroup.food;
 
 
   //最大パッケージ------
   const largestVariant = food.variants.reduce((a, b) =>
     a.weight > b.weight ? a : b
   );
-  //const pricePerKg = Math.round((largestVariant.price / largestVariant.weight) * 1000);
+
   //うちのこ情報を計算
   const der = myPet ? calcDER(myPet.weightKg, myPet.stage) : undefined;
   const dailyGrams = der && food.kcal ? Math.floor((der / food.kcal) * 100) : undefined;
@@ -44,7 +50,9 @@ const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood, myPet
           ? "0 6px 16px rgba(0,0,0,0.2), 0 -6px 16px rgba(0,0,0,0.2)"
           : "0 4px 8px rgba(0,0,0,0.1), 0 -4px 8px rgba(0,0,0,0.1)",
       }}
-      onClick={() => setSelectedFood({ food, groupedFood })}
+      onClick={() => {
+        setActiveFood(foodWithGroup);
+      }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -66,32 +74,41 @@ const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood, myPet
 
       {/* 画像とアニメーション部分 */}
       <div className="relative w-full h-[170px] overflow-hidden">
-        {groupedFood.foods.map((f, i) => {
-          const isActive = i === index;
-
-          return (
-            <motion.div
-              key={i}
-              className="absolute top-0 left-0 w-full h-full"
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{
-                opacity: isActive ? 1 : 0,
-                scale: isActive ? 1 : 0.8,
-                x: `${(i - index) * 100}%`,
-              }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            >
-              <img
-                src={`/images/${f.imgsrc}.png`}
-                alt={f.name_sub}
-                className="h-[160px] object-contain mx-auto"
-              />
-            </motion.div>
-          );
-        })}
+        {viewMode === "grouped" ? (
+          // groupモード：スライド式
+          groupedFood.foods.map((f, i) => {
+            const isActive = i === index;
+            return (
+              <motion.div
+                key={i}
+                className="absolute top-0 left-0 w-full h-full"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{
+                  opacity: isActive ? 1 : 0,
+                  scale: isActive ? 1 : 0.8,
+                  x: `${(i - index) * 100}%`,
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              >
+                <img
+                  src={`/images/${f.imgsrc}.png`}
+                  alt={f.name_sub}
+                  className="h-[160px] object-contain mx-auto"
+                />
+              </motion.div>
+            );
+          })
+        ) : (
+          // flatモード：単体表示
+          <img
+            src={`/images/${food.imgsrc}.png`}
+            alt={food.name_sub}
+            className="h-[160px] object-contain mx-auto"
+          />
+        )}
 
         {/* 矢印 */}
-        {groupedFood.foods.length > 1 && (
+        {viewMode === "grouped" && groupedFood.foods.length > 1 && (
           <>
             <button
               onClick={(e) => {
@@ -132,7 +149,7 @@ const FoodCard: FC<Props> = ({ groupedFood, selectedFood, setSelectedFood, myPet
         </div>
       )}
 
-      {groupedFood.foods.length > 1 && (
+      {viewMode === "grouped" && groupedFood.foods.length > 1 && (
         <div className="mt-2 flex justify-center space-x-2">
           {groupedFood.foods.map((_, i) => (
             <div

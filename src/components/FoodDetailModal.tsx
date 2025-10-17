@@ -1,9 +1,7 @@
 //FoodDetailModal.tsx
 
 import { useEffect,useState } from "react";
-import React from "react";
-import { motion } from "framer-motion";
-import type { Food, SelectedFood, GroupedFood } from "../types/types";
+import type { FoodWithGroup, ViewMode } from "../types/types";
 import { calcPFC } from "../utils/calcPFC";
 import FeatureIcons from "./FeatureIcons";
 import NutrientChart from "./NutrientChart";
@@ -13,24 +11,25 @@ import FoodListModal from "./FoodListModal";
 
 
 type Props = {
-  selectedFood: SelectedFood;
-  setSelectedFood: (f:SelectedFood)=>void;
+  activeFood: FoodWithGroup;
+  setActiveFood : (f:FoodWithGroup)=>void;
   onClose: () => void;  
   nutrientAvg: Record<string, number>;  //平均値オブジェクト
   nutrientMedian: Record<string, number>;  //中央値オブジェクト
+  viewMode: ViewMode;
 };
 
-export default function FoodDetailModal({selectedFood,setSelectedFood, onClose,nutrientAvg,nutrientMedian}:Props){
+export default function FoodDetailModal({activeFood, onClose,nutrientAvg,nutrientMedian, viewMode}:Props){
 
-    const foods = selectedFood.groupedFood.foods;
-    const groupedFood = selectedFood.groupedFood;
+    const foods = activeFood.groupedFood.foods;
 
-    const initialIndex = foods.findIndex(f=>f.food_id === selectedFood.food.food_id);
+    const initialIndex = foods.findIndex(f=>f.food_id === activeFood.food.food_id);
     const [currentIndex, setCurrentIndex] = useState(initialIndex);
-    const [isDetailMode, setIsDetailMode] = useState(foods.length === 1);   //1つなら即詳細表示
+    const [isDetailMode, setIsDetailMode] = useState(
+        viewMode === "flat" ||foods.length === 1);   //flatモード、またはfoodが1つなら即詳細表示
 
     const food = foods[currentIndex]//selectedFood.food;
-    const foodGroup = selectedFood.groupedFood; //多分いらなくなる
+    const foodGroup = activeFood.groupedFood; //多分いらなくなる
 
     //const pfc = calcPFC(food);
     const { pfc, note: pfcNote } = calcPFC(food, nutrientAvg);

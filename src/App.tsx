@@ -5,7 +5,7 @@ import FoodList from './FoodList'
 import Sidebar from "./Sidebar";
 import FoodDetailModal from "./components/FoodDetailModal";
 import { calcNutrientAverages, calcNutrientMedians } from "./utils/calcNutrients";
-import type { Stage, GroupedFood, Food, Nutrients, SelectedFood, MyPet, ViewMode } from "./types/types";
+import type { Stage, GroupedFood, Food, Nutrients, SelectedFood, MyPet, ViewMode, FoodWithGroup } from "./types/types";
 
 //GroupedFood[]からすべてのFood[]を抽出
 const foods: GroupedFood[] = groupedFoods;
@@ -24,7 +24,7 @@ export default function App() {
   const [isOrganic, setIsOrganic]=useState(false);
   const [isDomestic, setIsDomestic]=useState(false);
 
-  const [selectedFood, setSelectedFood] = useState<SelectedFood | null>(null);
+  const [activeFood, setActiveFood] = useState<FoodWithGroup | null>(null);
   //グループ表示か個別表示か
   const [viewMode, setViewMode] = useState<ViewMode>("grouped");
 
@@ -44,13 +44,14 @@ export default function App() {
      
 
     {/* モーダル */}
-    {selectedFood && (
+    {activeFood && (
       <FoodDetailModal
-      selectedFood={selectedFood}
-      setSelectedFood= {setSelectedFood}
-      onClose={()=> setSelectedFood(null)}
+      activeFood={activeFood}
+      setActiveFood={setActiveFood}
+      onClose={()=> setActiveFood(null)}
       nutrientAvg = {nutrientAvg}
       nutrientMedian={nutrientMedian}
+      viewMode={viewMode}
       />
     )}
 
@@ -66,8 +67,8 @@ export default function App() {
       idealWeight={idealWeight}
       isOrganic={isOrganic}
       isDomestic={isDomestic}
-      selectedFood={selectedFood}
-      setSelectedFood= {setSelectedFood}
+      activeFood={activeFood}
+      setActiveFood={setActiveFood}
       viewMode={viewMode}
       />
     </div>

@@ -1,12 +1,10 @@
 //FoodList.tsx
-import foods from "./data/foods.json";
-import type { Stage, GroupedFood,Food,Nutrients,SelectedFood, MyPet,ViewMode } from "./types/types";
+import type { Stage, GroupedFood,Food,Nutrients,SelectedFood, FoodWithGroup, MyPet,ViewMode } from "./types/types";
 import { calcDER } from "./utils/calories";
 import FoodCard from "./components/FoodCard";
 import { useMemo } from "react";
 
 type Props = {
-  //foods: GroupedFood[];
   groupedFoods:GroupedFood[];
   nutrientAvg:Nutrients;
   myPet: MyPet | undefined;
@@ -14,18 +12,18 @@ type Props = {
   idealWeight: number | undefined;
   isOrganic: boolean;
   isDomestic: boolean;
-  selectedFood: SelectedFood | null;
-  setSelectedFood: (f:SelectedFood)=>void;
+  activeFood: FoodWithGroup | null;
+  setActiveFood: (f:FoodWithGroup)=>void;
   viewMode: ViewMode;
 };
 
-const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, selectedFood, setSelectedFood, viewMode }: Props) => {
+const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, activeFood, setActiveFood, viewMode }: Props) => {
 
   const showUserInfo = myPet?.weightKg ? myPet.weightKg > 0 : false; //入力の有無を管理する
   const der = idealWeight ? calcDER(idealWeight, stage) : 0; //まず必要カロリーを計算
   //const foodsDisplay = isOrganic ? foods.filter((f) => f.isOrganic) : foods;
 
-const allFoods: SelectedFood[] = useMemo(() => {
+const allFoods: FoodWithGroup[] = useMemo(() => {
     return groupedFoods.flatMap(group =>
       group.foods.map(food => ({
         food,
@@ -35,7 +33,7 @@ const allFoods: SelectedFood[] = useMemo(() => {
   }, [groupedFoods]);
 
   //OrganicかつDomestic
-  const filteredGroups = foods.filter((group)=>{
+  const filteredGroups = groupedFoods.filter((group)=>{
     const matchesOrganic = isOrganic ? group.foods.some((food)=>food.isOrganic) : true;
     const matchesDomestic = isDomestic ? group.foods.some((food)=>food.isDomestic):true;
     return matchesOrganic && matchesDomestic;
@@ -45,6 +43,34 @@ const allFoods: SelectedFood[] = useMemo(() => {
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
+  {viewMode === "grouped"
+          ? filteredGroups.map((group) => (
+
+            
+              <FoodCard
+                key={group.id}
+                foodWithGroup={{food: group.foods[0], groupedFood:group}}
+                myPet={myPet}
+                activeFood={activeFood}
+                setActiveFood={setActiveFood}
+                viewMode={viewMode}
+              />
+ 
+
+            ))
+          : allFoods.map((sf) => (
+              <FoodCard
+                key={sf.food.food_id}
+                foodWithGroup={sf}
+                myPet={myPet}
+                activeFood={activeFood}
+                setActiveFood={setActiveFood}
+                viewMode={viewMode}
+              />
+            ))}
+
+
+{/* 
         {filteredGroups.map((group, index) => {
 
           return (
@@ -58,7 +84,7 @@ const allFoods: SelectedFood[] = useMemo(() => {
             />
           );
         })}
-
+*/}
       </div>
     </div>
   );
