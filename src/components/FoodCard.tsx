@@ -1,3 +1,4 @@
+//FoodCard.tsx
 import { useState } from "react";
 import type { FC } from "react";
 import type { Food, GroupedFood, SelectedFood, MyPet } from "../types/types";

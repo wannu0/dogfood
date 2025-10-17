@@ -1,15 +1,17 @@
 //Sidebar.tsx
 
-import type { Stage,MyPet } from "./types/types";
+import type { Stage,MyPet,ViewMode } from "./types/types";
 
 type Props = {
     myPet: MyPet | undefined;
     setMyPet:(p:MyPet)=>void;
     isOrganic: boolean;
     setIsOrganic: (o: boolean) => void;
+    viewMode: ViewMode;
+    setViewMode:(v:ViewMode)=>void;
 };
 
-export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic }: Props){
+export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, viewMode, setViewMode }: Props){
 
     const handleStageChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
         setMyPet({
@@ -27,6 +29,25 @@ export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic }: Pr
 
     return(
         <aside className="bg-[#D0E1E8] text-[#193F5F] w-full max-w-xs p-6 space-y-6 shadow-md">
+
+            <section>
+                {/* ビューモード切替 */}
+                <div className="flex flex-col gap-2 mt-4">
+                <button
+                    onClick={() => setViewMode("grouped")}
+                    className={`px-3 py-1 rounded ${viewMode === "grouped" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                >
+                    グループで表示
+                </button>
+                <button
+                    onClick={() => setViewMode("flat")}
+                    className={`px-3 py-1 rounded ${viewMode === "flat" ? "bg-blue-500 text-white" : "bg-gray-200"}`}
+                >
+                    フード一覧で表示
+                </button>
+                </div>
+            </section>
+            
             {/* うちのこ情報 */}
             <section>
                 <h2 className="text-lg font-bold mb-2 flex items-center gap-1">

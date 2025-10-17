@@ -13,6 +13,8 @@ export type Variant = {
   price: number;  // 円
 };
 
+export type ViewMode = "grouped" | "flat" | "brand" | "search";
+
 //成分ごとの情報
 export type Nutrient = {
     key: string;     // ← 新規追加（"protein" など）
