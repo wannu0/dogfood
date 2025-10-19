@@ -20,10 +20,11 @@ type Props = {
     setFatRange: (range: [number, number]) => void;
     fiberRange: [number, number];
     setFiberRange: (range: [number, number]) => void;
+    resetFilters: ()=>void;
 };
 
 export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, viewMode, setViewMode, nutrientFilter,
-     setNutrientFilter, nutrientRanges, proteinRange, setProteinRange, fatRange, setFatRange, fiberRange, setFiberRange }: Props){
+     setNutrientFilter, nutrientRanges, proteinRange, setProteinRange, fatRange, setFatRange, fiberRange, setFiberRange, resetFilters }: Props){
     //なにかの値を更新している？
     const handleChange = (key: keyof NutrientFilter, index:0 | 1, value: number)=>{
         const updated = {...nutrientFilter};
@@ -72,10 +73,10 @@ export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, view
                 <h2 className="text-lg font-bold mb-2 flex items-center gap-1">
                     栄養素でフィルタ
                 </h2>
-                <div className="space-y-4 p-4 bg-white rounded">
+                <div className="flex px-3 p-2 bg-white rounded">
 
                     {/*  レンジスライダー */}
-                    <div className="mb-6">
+                    <div className="w-full">
                         <div className="mb-4">
                             <DualRangeSlider
                             label="タンパク質 (%)"
@@ -114,6 +115,14 @@ export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, view
                             }
                             />
                         </div>
+                        <div className="flex justify-center mt-4">
+                            <button
+                            onClick={resetFilters}
+                            className="bg-white border border-cardBaseFont hover:bg-gray-200 text-sm text-gray-700 p-2 rounded shadow-sm"
+                            >
+                            🔄 フィルターをリセット
+                            </button>
+                        </div>
                     </div>
 
                     {/* 手入力 */}
@@ -148,7 +157,6 @@ export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, view
                         */}
 
                 </div>
-
             </section>
             
             {/* うちのこ情報 */}

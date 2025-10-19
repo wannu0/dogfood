@@ -83,7 +83,23 @@ export default function App() {
     fat: fatRange,
     fiber: fiberRange,
   });
-}, [proteinRange, fatRange, fiberRange]);
+  }, [proteinRange, fatRange, fiberRange]);
+
+  //リセット用デフォルトデータを計算
+  const initialFilter: NutrientFilter = {
+  protein: [nutrientRanges.protein.min, nutrientRanges.protein.max],
+  fat: [nutrientRanges.fat.min, nutrientRanges.fat.max],
+  fiber: [nutrientRanges.fiber.min, nutrientRanges.fiber.max],
+  };
+
+  //リセット用関数
+  const resetFilters = () => {
+  setNutrientFilter(initialFilter);
+  setProteinRange(initialFilter.protein);
+  setFatRange(initialFilter.fat);
+  setFiberRange(initialFilter.fiber);
+  // 他にも isOrganic など初期化したければここで
+  };
 
   //グループ表示か個別表示か
   const [viewMode, setViewMode] = useState<ViewMode>("grouped");
@@ -109,6 +125,7 @@ export default function App() {
       setFatRange={setFatRange}
       fiberRange={fiberRange}
       setFiberRange={setFiberRange}
+      resetFilters={resetFilters}
       />
      
 
