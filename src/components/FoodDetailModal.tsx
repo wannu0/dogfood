@@ -133,6 +133,7 @@ export default function FoodDetailModal({activeFood, onClose,nutrientAvg,nutrien
                                 {/* ひだりがわ：縦並び */}
                                 <div className="flex flex-col w-2/5 items-center justify-center p-2">
                                     <img src={`/images/${food.imgsrc}.png`} alt={foodGroup.name} className="w-[150px] m-4" />
+                                    {/*<div className="mb-1 text-sm">{food.comment}</div>*/}
                                     <div><FeatureIcons food={food} /></div>
                                         <div className="pt-3 w-[80%]">
                                             <div className={`space-y-1 ${food.variants.length < 3 ? "text-xs" : "text-xs"}`}>
@@ -154,11 +155,14 @@ export default function FoodDetailModal({activeFood, onClose,nutrientAvg,nutrien
                                 </div>
                                 {/* みぎがわ：縦並び */}
                                 <div className="flex flex-col flex-1 gap-2 p-2">
-                                    {/*<div className="mb-1 text-sm">{food.comment}</div>*/}
-                                    <PFCChart pfc={pfc} note={pfcNote} />
+                                    <div className="mb-1 text-sm">{food.comment}</div>
+                                    
                                     <div className="min-h-[200px] flex flex-col justify-center">
                                     <NutrientChart nutrients={nutrientData} averages={nutrientAvg} medians={nutrientMedian}/>
                                     </div>
+                                    
+                                    <PFCChart pfc={pfc} note={pfcNote} />
+                                    
                                     <div className="text-modalBaseFont_pale text-right text-sm mt-auto">
                                         <span className="mr-5">{food.kcal || "-"}kcal / 100g</span>
                                         <span>原産国：{food.country || "情報なし"}</span>
@@ -168,7 +172,9 @@ export default function FoodDetailModal({activeFood, onClose,nutrientAvg,nutrien
                             
                             {/* 下部 */}
                             <div className="space-y-2 text-sm border border-borderBeige mt-2 p-2 rounded">
-                                <p><strong>原材料</strong></p>
+                                <p>
+                                    <strong>原材料</strong>
+                                </p>
                                 <div className="ml-3 mr-3 text-xs">{food.ingredients || "情報なし"}
                                     {food.note && (
                                         <div className="text-xs bg-mordalSubInfo p-2 mt-1">{food.note}</div>

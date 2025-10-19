@@ -1,5 +1,5 @@
 //FoodList.tsx
-import type { Stage, GroupedFood,Food,Nutrients,SelectedFood, FoodWithGroup, MyPet,ViewMode } from "./types/types";
+import type { Stage, GroupedFood,Food,Nutrients, FoodWithGroup, MyPet,ViewMode,NutrientFilter,NutrientRange } from "./types/types";
 import { calcDER } from "./utils/calories";
 import FoodCard from "./components/FoodCard";
 import { useMemo } from "react";
@@ -15,15 +15,18 @@ type Props = {
   activeFood: FoodWithGroup | null;
   setActiveFood: (f:FoodWithGroup)=>void;
   viewMode: ViewMode;
+  //allFoods: Food[];
+  nutrientFilter: NutrientFilter;
 };
 
-const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, activeFood, setActiveFood, viewMode }: Props) => {
+const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, activeFood, setActiveFood, viewMode, nutrientFilter }: Props) => {
 
   const showUserInfo = myPet?.weightKg ? myPet.weightKg > 0 : false; //入力の有無を管理する
   const der = idealWeight ? calcDER(idealWeight, stage) : 0; //まず必要カロリーを計算
   //const foodsDisplay = isOrganic ? foods.filter((f) => f.isOrganic) : foods;
 
-const allFoods: FoodWithGroup[] = useMemo(() => {
+  //すべてのfoodにgroup情報をもたせた構造…個別表示に使用する 
+  const allFoods: FoodWithGroup[] = useMemo(() => {
     return groupedFoods.flatMap(group =>
       group.foods.map(food => ({
         food,
@@ -31,6 +34,21 @@ const allFoods: FoodWithGroup[] = useMemo(() => {
       }))
     );
   }, [groupedFoods]);
+
+  //フィルター処理
+  const filteredFoods = useMemo(()=>{
+    return allFoods.filter(({food})=>{
+      const n = food.nutrients;
+      if(!n) return false;
+
+      return(
+        n.protein >= nutrientFilter.protein[0] && n.protein <= nutrientFilter.protein[1] &&
+        n.fat >= nutrientFilter.fat[0] && n.fat <= nutrientFilter.fat[1] &&
+        n.fiber >= nutrientFilter.fiber[0] && n.fiber <= nutrientFilter.fiber[1]
+      );
+    });
+  },[allFoods, nutrientFilter]);
+  
 
   //OrganicかつDomestic
   const filteredGroups = groupedFoods.filter((group)=>{
@@ -58,7 +76,7 @@ const allFoods: FoodWithGroup[] = useMemo(() => {
  
 
             ))
-          : allFoods.map((sf) => (
+          : filteredFoods.map((sf) => ( //allFood.
               <FoodCard
                 key={sf.food.food_id}
                 foodWithGroup={sf}

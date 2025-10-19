@@ -1,6 +1,7 @@
 //Sidebar.tsx
 
-import type { Stage,MyPet,ViewMode } from "./types/types";
+import type { Stage,MyPet,ViewMode,NutrientFilter,NutrientRange } from "./types/types";
+import { DualRangeSlider } from "@/components/ui/DualRangeSlider";
 
 type Props = {
     myPet: MyPet | undefined;
@@ -9,9 +10,26 @@ type Props = {
     setIsOrganic: (o: boolean) => void;
     viewMode: ViewMode;
     setViewMode:(v:ViewMode)=>void;
+    nutrientFilter:NutrientFilter;
+    setNutrientFilter: (f: NutrientFilter)=>void;
+    nutrientRanges: NutrientRange;
+    //フィルター状態と関数を追加
+    proteinRange: [number, number];
+    setProteinRange: (range: [number, number]) => void;
+    fatRange: [number, number];
+    setFatRange: (range: [number, number]) => void;
+    fiberRange: [number, number];
+    setFiberRange: (range: [number, number]) => void;
 };
 
-export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, viewMode, setViewMode }: Props){
+export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, viewMode, setViewMode, nutrientFilter,
+     setNutrientFilter, nutrientRanges, proteinRange, setProteinRange, fatRange, setFatRange, fiberRange, setFiberRange }: Props){
+    //なにかの値を更新している？
+    const handleChange = (key: keyof NutrientFilter, index:0 | 1, value: number)=>{
+        const updated = {...nutrientFilter};
+        updated[key][index] = value;
+        setNutrientFilter(updated);
+    };
 
     const handleStageChange = (e:React.ChangeEvent<HTMLSelectElement>)=>{
         setMyPet({
@@ -27,6 +45,7 @@ export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, view
         });
     };
 
+    //========== return ===========
     return(
         <aside className="bg-[#D0E1E8] text-[#193F5F] w-full max-w-xs p-6 space-y-6 shadow-md">
 
@@ -46,6 +65,90 @@ export default function Sidebar({ myPet, setMyPet, isOrganic, setIsOrganic, view
                     フード一覧で表示
                 </button>
                 </div>
+            </section>
+
+            {/* 栄養素フィルタ */}
+            <section>
+                <h2 className="text-lg font-bold mb-2 flex items-center gap-1">
+                    栄養素でフィルタ
+                </h2>
+                <div className="space-y-4 p-4 bg-white rounded">
+
+                    {/*  レンジスライダー */}
+                    <div className="mb-6">
+                        <div className="mb-4">
+                            <DualRangeSlider
+                            label="タンパク質 (%)"
+                            min={nutrientRanges.protein.min}
+                            max={nutrientRanges.protein.max}
+                            step={0.5}
+                            value={proteinRange}
+                            onValueChange={(newRange) =>
+                                setProteinRange(newRange as [number, number])
+                            }
+                            />
+                        </div>
+                        
+                        <div className="mb-4">
+                            <DualRangeSlider
+                            label="脂質 (%)"
+                            min={nutrientRanges.fat.min}
+                            max={nutrientRanges.fat.max}
+                            step={0.5}
+                            value={fatRange}
+                            onValueChange={(newRange) =>
+                                setFatRange(newRange as [number, number])
+                            }
+                            />
+                        </div>
+
+                        <div className="mb-4">
+                            <DualRangeSlider
+                            label="粗繊維 (%)"
+                            min={nutrientRanges.fiber.min}
+                            max={nutrientRanges.fiber.max}
+                            step={0.5}
+                            value={fiberRange}
+                            onValueChange={(newRange) =>
+                                setFiberRange(newRange as [number, number])
+                            }
+                            />
+                        </div>
+                    </div>
+
+                    {/* 手入力 */}
+                    {/* 
+                    {(["protein","fat","fiber"] as const).map((nutrient)=>(
+                        <div key={nutrient}>
+                            <label className="block font-semibold mb-1">{nutrient === "protein" ? "タンパク質" : nutrient === "fat" ? "脂質" : "粗繊維"}</label>
+                            <div className="flex items-center space-x-2">
+                                <input
+                                type="number"
+                                step={0.5}
+                                min={nutrientRanges[nutrient].min}
+                                max={nutrientRanges[nutrient].max}
+                                value={nutrientFilter[nutrient][0]}
+                                onChange={(e) => handleChange(nutrient, 0, parseFloat(e.target.value))}
+                                className="w-16 border rounded px-1"
+                                />
+                                <span>〜</span>
+                                <input
+                                type="number"
+                                step={0.5}
+                                min={nutrientRanges[nutrient].min}
+                                max={nutrientRanges[nutrient].max}
+                                value={nutrientFilter[nutrient][1]}
+                                onChange={(e) => handleChange(nutrient, 1, parseFloat(e.target.value))}
+                                className="w-16 border rounded px-1"
+                                />
+                                <span>%</span>
+                            </div>
+                        </div>
+                    ))}
+                        */}
+
+                </div>
+
             </section>
             
             {/* うちのこ情報 */}

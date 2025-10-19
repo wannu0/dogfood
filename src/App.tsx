@@ -1,21 +1,49 @@
 // App.tsx
 import groupedFoods from "./data/foods.json";
-import {useState} from "react";
+import {useState,useMemo, useEffect} from "react";
 import FoodList from './FoodList'
 import Sidebar from "./Sidebar";
 import FoodDetailModal from "./components/FoodDetailModal";
 import { calcNutrientAverages, calcNutrientMedians } from "./utils/calcNutrients";
-import type { Stage, GroupedFood, Food, Nutrients, SelectedFood, MyPet, ViewMode, FoodWithGroup } from "./types/types";
+import type { Stage, GroupedFood, Food, Nutrients, MyPet, ViewMode, FoodWithGroup, NutrientFilter, NutrientRange } from "./types/types";
+import RangeSliderDemo from "./RangeSliderDemo";
+//-------------------------------------------
+
 
 //GroupedFood[]からすべてのFood[]を抽出
-const foods: GroupedFood[] = groupedFoods;
+//const foods: GroupedFood[] = groupedFoods;
 //すべてをallFoods配列に格納
-const allFoods: Food[] = foods.flatMap(group => group.foods);
+//const allFoods: Food[] = foods.flatMap(group => group.foods);
+
+// GroupedFood[] → Food[] に展開
+const allFoods: Food[] = groupedFoods.flatMap((group) => group.foods);
+
+// 栄養素のレンジ（min/max）を計算-food[]を受け取って、そのなかの最大・最小をNutrientRange型にセットして返す関数
+const getNutrientRanges = (foods: Food[]): NutrientRange => {
+  const values = {
+    protein: foods.map((f) => f.nutrients?.protein ?? 0),
+    fat: foods.map((f) => f.nutrients?.fat ?? 0),
+    fiber: foods.map((f) => f.nutrients?.fiber ?? 0),
+  };
+
+  return {
+    protein: { min: Math.min(...values.protein), max: Math.max(...values.protein) },
+    fat: { min: Math.min(...values.fat), max: Math.max(...values.fat) },
+    fiber: { min: Math.min(...values.fiber), max: Math.max(...values.fiber) },
+  };
+};
+
 //平均値と中央値の計算
 const nutrientAvg = calcNutrientAverages(allFoods)  as Nutrients;
 const nutrientMedian = calcNutrientMedians(allFoods) as Nutrients;
 
+
+
+
+
+//--------------------------------------------
 export default function App() {
+
   //うちのこ情報
   const [myPet, setMyPet] = useState<MyPet | undefined>(undefined);
   //いらなくなるかも
@@ -25,6 +53,38 @@ export default function App() {
   const [isDomestic, setIsDomestic]=useState(false);
 
   const [activeFood, setActiveFood] = useState<FoodWithGroup | null>(null);
+
+  //絞り込みの設定----------
+  const nutrientRanges = useMemo(() => getNutrientRanges(allFoods), []);
+  //nutrientFilterにそれぞれの最小最大をセット（デフォルト）
+  const [nutrientFilter, setNutrientFilter] = useState<NutrientFilter>({
+    protein: [nutrientRanges.protein.min, nutrientRanges.protein.max],
+    fat: [nutrientRanges.fat.min, nutrientRanges.fat.max],
+    fiber: [nutrientRanges.fiber.min, nutrientRanges.fiber.max],
+  });
+
+  const [proteinRange, setProteinRange] = useState<[number, number]>([
+  nutrientRanges.protein.min,
+  nutrientRanges.protein.max,
+  ]);
+  const [fatRange, setFatRange] = useState<[number, number]>([
+  nutrientRanges.fat.min,
+  nutrientRanges.fat.max,
+  ]);
+  const [fiberRange, setFiberRange] = useState<[number, number]>([
+  nutrientRanges.fiber.min,
+  nutrientRanges.fiber.max,
+  ]);
+
+  //sliderの入力を反映する
+  useEffect(() => {
+  setNutrientFilter({
+    protein: proteinRange,
+    fat: fatRange,
+    fiber: fiberRange,
+  });
+}, [proteinRange, fatRange, fiberRange]);
+
   //グループ表示か個別表示か
   const [viewMode, setViewMode] = useState<ViewMode>("grouped");
 
@@ -40,6 +100,15 @@ export default function App() {
       setIsOrganic={setIsOrganic}
       viewMode={viewMode}
       setViewMode={setViewMode}
+      nutrientFilter={nutrientFilter}
+      setNutrientFilter={setNutrientFilter}
+      nutrientRanges={nutrientRanges}
+      proteinRange={proteinRange}
+      setProteinRange={setProteinRange}
+      fatRange={fatRange}
+      setFatRange={setFatRange}
+      fiberRange={fiberRange}
+      setFiberRange={setFiberRange}
       />
      
 
@@ -70,6 +139,8 @@ export default function App() {
       activeFood={activeFood}
       setActiveFood={setActiveFood}
       viewMode={viewMode}
+      //allFoods={allFoods}
+      nutrientFilter={nutrientFilter}
       />
     </div>
     </div>

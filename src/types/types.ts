@@ -74,7 +74,7 @@ export type GroupedFood = {
   foods: Food[];
 };
 
-//モーダルにわたす情報
+//モーダルにわたす情報（たぶんもう使ってない）
 export type SelectedFood = {
   food: Food;
   groupedFood: GroupedFood;
@@ -84,4 +84,18 @@ export type SelectedFood = {
 export type FoodWithGroup = {
   food: Food;
   groupedFood: GroupedFood;
+};
+
+//栄養素フィルターの型
+export type NutrientFilter = {
+  protein: [number, number];
+  fat: [number, number];
+  fiber: [number, number];
+};
+
+// 栄養素の最小・最大値（スライダーの表示用）
+export type NutrientRange = {
+  protein: { min: number; max: number };
+  fat: { min: number; max: number };
+  fiber: { min: number; max: number };
 };
