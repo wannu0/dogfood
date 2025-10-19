@@ -57,13 +57,23 @@ const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomest
     return matchesOrganic && matchesDomestic;
   });
 
+  //絞り込みの対象が無い場合
+  if (viewMode === "flat" && filteredFoods.length === 0) {
+    return (
+      <div className="p-8 text-center text-gray-500 text-sm italic">
+      😢 条件に合うフードがありませんでした。
+      <br />
+      フィルターを緩めて、再度お試しください。
+      </div>
+    );
+  }
+
   return (
     <div className="container mx-auto px-4">
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
 
-  {viewMode === "grouped"
+        {viewMode === "grouped"
           ? filteredGroups.map((group) => (
-
             
               <FoodCard
                 key={group.id}
@@ -76,7 +86,7 @@ const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomest
  
 
             ))
-          : filteredFoods.map((sf) => ( //allFood.
+          : filteredFoods.map((sf) => (
               <FoodCard
                 key={sf.food.food_id}
                 foodWithGroup={sf}
@@ -86,23 +96,6 @@ const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomest
                 viewMode={viewMode}
               />
             ))}
-
-
-{/* 
-        {filteredGroups.map((group, index) => {
-
-          return (
-            <FoodCard 
-              //key={index}
-              key={group.id}
-              groupedFood={group}
-              myPet={myPet}
-              selectedFood={selectedFood}
-              setSelectedFood={setSelectedFood}
-            />
-          );
-        })}
-*/}
       </div>
     </div>
   );
