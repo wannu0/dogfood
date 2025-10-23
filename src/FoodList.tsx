@@ -15,11 +15,13 @@ type Props = {
   activeFood: FoodWithGroup | null;
   setActiveFood: (f:FoodWithGroup)=>void;
   viewMode: ViewMode;
-  //allFoods: Food[];
   nutrientFilter: NutrientFilter;
+  toggleFavorite:(f:FoodWithGroup)=>void;
+  isFavorite:(f:FoodWithGroup)=>boolean;
 };
 
-const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, activeFood, setActiveFood, viewMode, nutrientFilter }: Props) => {
+const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, activeFood, setActiveFood, 
+  viewMode, nutrientFilter, toggleFavorite, isFavorite }: Props) => {
 
   const showUserInfo = myPet?.weightKg ? myPet.weightKg > 0 : false; //入力の有無を管理する
   const der = idealWeight ? calcDER(idealWeight, stage) : 0; //まず必要カロリーを計算
@@ -82,6 +84,8 @@ const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomest
                 activeFood={activeFood}
                 setActiveFood={setActiveFood}
                 viewMode={viewMode}
+                toggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
               />
  
 
@@ -94,6 +98,8 @@ const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomest
                 activeFood={activeFood}
                 setActiveFood={setActiveFood}
                 viewMode={viewMode}
+                toggleFavorite={toggleFavorite}
+                isFavorite={isFavorite}
               />
             ))}
       </div>

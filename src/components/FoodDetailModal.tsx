@@ -158,11 +158,14 @@ export default function FoodDetailModal({activeFood, onClose,nutrientAvg,nutrien
                                     <div className="mb-1 text-sm">{food.comment}</div>
                                     
                                     <div className="min-h-[200px] flex flex-col justify-center">
-                                    <NutrientChart nutrients={nutrientData} averages={nutrientAvg} medians={nutrientMedian}/>
+                                        <div className="text-sm"><strong>保証分析値</strong></div>
+                                        <NutrientChart nutrients={nutrientData} averages={nutrientAvg} medians={nutrientMedian}/>
                                     </div>
                                     
-                                    <PFCChart pfc={pfc} note={pfcNote} />
-                                    
+                                    <div>
+                                        <div className="text-sm"><strong>乾物基準</strong></div>
+                                        <PFCChart pfc={pfc} note={pfcNote} />
+                                    </div>
                                     <div className="text-modalBaseFont_pale text-right text-sm mt-auto">
                                         <span className="mr-5">{food.kcal || "-"}kcal / 100g</span>
                                         <span>原産国：{food.country || "情報なし"}</span>

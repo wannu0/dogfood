@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import FeatureIcons from "./FeatureIcons";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { calcDER } from "../utils/calories";
+import { Heart, HeartOff } from "lucide-react"; // お好みのアイコンを使ってOK！
 
 type Props = {
   myPet? : MyPet;
@@ -13,9 +14,11 @@ type Props = {
   activeFood: FoodWithGroup | null;
   setActiveFood: (f:FoodWithGroup)=>void;
   viewMode: ViewMode;
+  toggleFavorite:(f:FoodWithGroup)=>void;
+  isFavorite:(f:FoodWithGroup)=>boolean;
 };
 
-const FoodCard: FC<Props> = ({ foodWithGroup, setActiveFood, myPet, viewMode }) => {
+const FoodCard: FC<Props> = ({ foodWithGroup, setActiveFood, myPet, viewMode, toggleFavorite, isFavorite }) => {
   const [index, setIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const {groupedFood} = foodWithGroup;
@@ -25,6 +28,9 @@ const FoodCard: FC<Props> = ({ foodWithGroup, setActiveFood, myPet, viewMode }) 
     ? groupedFood.foods[index]
     : foodWithGroup.food;
 
+
+  //お気に入り状態の表示
+  const isFav = isFavorite(foodWithGroup);
 
   //最大パッケージ------
   const largestVariant = food.variants.reduce((a, b) =>
@@ -37,7 +43,7 @@ const FoodCard: FC<Props> = ({ foodWithGroup, setActiveFood, myPet, viewMode }) 
   const daysPerBag = dailyGrams && dailyGrams > 0 ? Math.floor(largestVariant.weight / dailyGrams) : undefined;
   const pricePerDay = daysPerBag && daysPerBag > 0 ? Math.floor(largestVariant.price / daysPerBag) : undefined;
 
-
+  //ページング
   const next = () => setIndex((i) => (i + 1) % groupedFood.foods.length);
   const prev = () => setIndex((i) => (i - 1 + groupedFood.foods.length) % groupedFood.foods.length);
 
@@ -56,6 +62,7 @@ const FoodCard: FC<Props> = ({ foodWithGroup, setActiveFood, myPet, viewMode }) 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
+
       {/* タイトル部分 */}
       <div className="h-[3.5rem] flex flex-col justify-center items-center text-center mb-2">
         <h2
@@ -74,6 +81,19 @@ const FoodCard: FC<Props> = ({ foodWithGroup, setActiveFood, myPet, viewMode }) 
 
       {/* 画像とアニメーション部分 */}
       <div className="relative w-full h-[170px] overflow-hidden">
+
+        {/* お気に入りボタン */}
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation(); // カードクリックイベントとバッティングしないように
+            toggleFavorite(foodWithGroup);
+          }}
+          className="absolute top-0 right-2 p-1 text-red-500 hover:text-red-700 z-10"
+        >
+          {isFav ? "❤️" : "🤍"}
+        </button>
+
         {viewMode === "grouped" ? (
           // groupモード：スライド式
           groupedFood.foods.map((f, i) => {

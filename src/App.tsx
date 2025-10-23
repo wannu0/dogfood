@@ -6,7 +6,6 @@ import Sidebar from "./Sidebar";
 import FoodDetailModal from "./components/FoodDetailModal";
 import { calcNutrientAverages, calcNutrientMedians } from "./utils/calcNutrients";
 import type { Stage, GroupedFood, Food, Nutrients, MyPet, ViewMode, FoodWithGroup, NutrientFilter, NutrientRange } from "./types/types";
-import RangeSliderDemo from "./RangeSliderDemo";
 //-------------------------------------------
 
 
@@ -36,8 +35,6 @@ const getNutrientRanges = (foods: Food[]): NutrientRange => {
 //平均値と中央値の計算
 const nutrientAvg = calcNutrientAverages(allFoods)  as Nutrients;
 const nutrientMedian = calcNutrientMedians(allFoods) as Nutrients;
-
-
 
 
 
@@ -104,6 +101,23 @@ export default function App() {
   //グループ表示か個別表示か
   const [viewMode, setViewMode] = useState<ViewMode>("grouped");
 
+  //お気に入りの登録
+  const [favorites, setFavorites] = useState<FoodWithGroup[]>([]);
+
+  //お気に入り登録・解除トグル関数
+  const toggleFavorite = (food: FoodWithGroup) => {
+    setFavorites((prev) => {
+      const exists = prev.some((f) => f.food.food_id === food.food.food_id);
+      return exists
+        ? prev.filter((f) => f.food.food_id !== food.food.food_id)
+        : [...prev, food];
+    });
+  };
+
+  //お気に入りかどうか返す関数
+  const isFavorite = (food: FoodWithGroup) =>
+  favorites.some((f) => f.food.food_id === food.food.food_id);
+
 
   return (
     <div className="flex min-h-screen">
@@ -156,8 +170,9 @@ export default function App() {
       activeFood={activeFood}
       setActiveFood={setActiveFood}
       viewMode={viewMode}
-      //allFoods={allFoods}
       nutrientFilter={nutrientFilter}
+      toggleFavorite={toggleFavorite}
+      isFavorite={isFavorite}
       />
     </div>
     </div>
