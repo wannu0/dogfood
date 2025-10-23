@@ -4,6 +4,7 @@ import {useState,useMemo, useEffect} from "react";
 import FoodList from './FoodList'
 import Sidebar from "./Sidebar";
 import FoodDetailModal from "./components/FoodDetailModal";
+import FavoritesBar from "./components/FavoritesBar";
 import { calcNutrientAverages, calcNutrientMedians } from "./utils/calcNutrients";
 import type { Stage, GroupedFood, Food, Nutrients, MyPet, ViewMode, FoodWithGroup, NutrientFilter, NutrientRange } from "./types/types";
 //-------------------------------------------
@@ -175,6 +176,15 @@ export default function App() {
       isFavorite={isFavorite}
       />
     </div>
+
+    {/* お気に入りバー */}
+    <FavoritesBar
+      favorites={favorites}
+      toggleFavorite={toggleFavorite}
+      onCompareClick={() => {
+        alert("比較画面をここで表示予定");
+      }}
+    />
     </div>
 
   )
