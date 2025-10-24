@@ -7,13 +7,10 @@ import FoodDetailModal from "./components/FoodDetailModal";
 import FavoritesBar from "./components/FavoritesBar";
 import { calcNutrientAverages, calcNutrientMedians } from "./utils/calcNutrients";
 import type { Stage, GroupedFood, Food, Nutrients, MyPet, ViewMode, FoodWithGroup, NutrientFilter, NutrientRange } from "./types/types";
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import ComparePage from './pages/ComparePage';
 //-------------------------------------------
-
-
-//GroupedFood[]からすべてのFood[]を抽出
-//const foods: GroupedFood[] = groupedFoods;
-//すべてをallFoods配列に格納
-//const allFoods: Food[] = foods.flatMap(group => group.foods);
 
 // GroupedFood[] → Food[] に展開
 const allFoods: Food[] = groupedFoods.flatMap((group) => group.foods);
@@ -41,6 +38,7 @@ const nutrientMedian = calcNutrientMedians(allFoods) as Nutrients;
 
 //--------------------------------------------
 export default function App() {
+  const navigate = useNavigate();
 
   //うちのこ情報
   const [myPet, setMyPet] = useState<MyPet | undefined>(undefined);
@@ -157,9 +155,10 @@ export default function App() {
     )}
 
     {/* メインコンテンツ */}
+    {/*
     <div className="p-4 space-y-8">
       <h1 className="text-2xl font-bold text-center">ドッグフード計算アプリ 🐶</h1>
-
+     
       <FoodList
       groupedFoods={groupedFoods}
       nutrientAvg = {nutrientAvg}
@@ -176,6 +175,7 @@ export default function App() {
       isFavorite={isFavorite}
       />
     </div>
+      */}
 
     {/* お気に入りバー */}
     <FavoritesBar
@@ -185,6 +185,39 @@ export default function App() {
         alert("比較画面をここで表示予定");
       }}
     />
+
+    <Routes>
+        <Route path="/" element={
+          <HomePage
+            groupedFoods={groupedFoods}
+            nutrientAvg={nutrientAvg}
+            myPet={myPet}
+            setMyPet={setMyPet}
+            stage={stage}
+            idealWeight={idealWeight}
+            isOrganic={isOrganic}
+            isDomestic={isDomestic}
+            activeFood={activeFood}
+            setActiveFood={setActiveFood}
+            viewMode={viewMode}
+            setViewMode={setViewMode}
+            nutrientFilter={nutrientFilter}
+            setNutrientFilter={setNutrientFilter}
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+            isFavorite={isFavorite}
+            nutrientRanges={nutrientRanges}          />
+        } />
+        <Route path="/compare" element={
+          <ComparePage
+            favorites={favorites}
+            toggleFavorite={toggleFavorite}
+            onClose={() => navigate('/')}
+          />
+        } />
+      </Routes>
+
+
     </div>
 
   )

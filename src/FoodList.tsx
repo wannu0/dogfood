@@ -1,5 +1,5 @@
 //FoodList.tsx
-import type { Stage, GroupedFood,Food,Nutrients, FoodWithGroup, MyPet,ViewMode,NutrientFilter,NutrientRange } from "./types/types";
+import type { Stage, GroupedFood,Nutrients, FoodWithGroup, MyPet,ViewMode,NutrientFilter,NutrientRange } from "./types/types";
 import { calcDER } from "./utils/calories";
 import FoodCard from "./components/FoodCard";
 import { useMemo } from "react";
@@ -18,6 +18,10 @@ type Props = {
   nutrientFilter: NutrientFilter;
   toggleFavorite:(f:FoodWithGroup)=>void;
   isFavorite:(f:FoodWithGroup)=>boolean;
+  favorites: FoodWithGroup[];
+  setViewMode: (v: ViewMode) => void;
+  setNutrientFilter: (f: NutrientFilter) => void;
+  nutrientRanges: NutrientRange;
 };
 
 const FoodList = ({ groupedFoods, myPet, stage, idealWeight, isOrganic, isDomestic, activeFood, setActiveFood, 
