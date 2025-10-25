@@ -1,6 +1,7 @@
 // components/FavoritesBar.tsx
 import React from "react";
 import type { FoodWithGroup } from "@/types/types";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   favorites: FoodWithGroup[];
@@ -8,7 +9,10 @@ interface Props {
   onCompareClick: () => void;
 }
 
+//-----------------------------------------
 const FavoritesBar: React.FC<Props> = ({ favorites, toggleFavorite, onCompareClick }) => {
+  const navigate = useNavigate();
+
   if (favorites.length === 0) return null;
 
   return (
@@ -27,14 +31,15 @@ const FavoritesBar: React.FC<Props> = ({ favorites, toggleFavorite, onCompareCli
             <img
                 src={`/images/${item.food.imgsrc}.png`}
                 alt={item.groupedFood.name}
-                className="max-w-full max-h-full object-contain bg-red-400" // ★ ← important!
+                className="max-w-full max-h-full object-contain bg-red-400" 
             />
             </button>
         ))}
       </div>
 
       <button
-        onClick={onCompareClick}
+        //onClick={onCompareClick}
+        onClick={() => navigate("/compare")}
         className="ml-4 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded shadow"
       >
         比較

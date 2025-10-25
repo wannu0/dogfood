@@ -213,6 +213,8 @@ export default function App() {
             favorites={favorites}
             toggleFavorite={toggleFavorite}
             onClose={() => navigate('/')}
+            nutrientAvg = {nutrientAvg}
+            nutrientMedian={nutrientMedian}
           />
         } />
       </Routes>
