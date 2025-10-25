@@ -13,10 +13,11 @@ type Props = {
   activeFood: FoodWithGroup;
   nutrientAvg: Record<string, number>;  //平均値オブジェクト
   nutrientMedian: Record<string, number>;  //中央値オブジェクト
+  maxVariantsLength: number;    //Favoritsに登録しているフードの持つパッケージ数の最大値
 };
 
 
-export default function FoodDetailModal({activeFood,nutrientAvg,nutrientMedian}:Props){
+export default function FoodDetailModal({activeFood,nutrientAvg,nutrientMedian, maxVariantsLength}:Props){
 
     const foods = activeFood.groupedFood.foods;
 
@@ -77,16 +78,17 @@ export default function FoodDetailModal({activeFood,nutrientAvg,nutrientMedian}:
                 </div>
             </div>
             
-            <div>
+            <div className="min-h-[172px]">
                 <div className="text-sm"><strong>乾物基準</strong></div>
                 <PFCChart pfc={pfc} note={pfcNote} />
                 
             </div>
 
-            {/* パッケー樹 */}
+            {/* パッケージ */}
             <div>
                 <div className="text-sm"><strong>パッケージ</strong></div>
-                <div className="text-sm bg-green-300">
+                <div className="text-sm mt-2"
+                style={{ minHeight: `${maxVariantsLength * 20}px` }}>
                     {food.variants.map((v, i) => {
                     const weightText = v.weight >= 1000 ? `${(v.weight / 1000).toFixed(1)}kg` : `${v.weight}g`;
                     const priceText = `${v.price.toLocaleString()}円`;

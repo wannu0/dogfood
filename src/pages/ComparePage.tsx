@@ -13,6 +13,7 @@ type Props = {
 };
 
 export default function ComparePage({ favorites, toggleFavorite, onClose, nutrientAvg, nutrientMedian }: Props) {
+  //お気に入りに1件も登録されていない場合
   if (favorites.length === 0) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center p-4">
@@ -24,6 +25,11 @@ export default function ComparePage({ favorites, toggleFavorite, onClose, nutrie
     );
   }
 
+  // 事前処理
+  const hasNameSub = favorites.some(item => item.food.name_sub);
+  const maxVariantsLength = Math.max(...favorites.map(item => item.food.variants.length));
+  console.log(maxVariantsLength);
+
   return (
 
     <div className="min-h-screen p-4 bg-gray-50">
@@ -32,14 +38,16 @@ export default function ComparePage({ favorites, toggleFavorite, onClose, nutrie
       </button>
 
       <div className="overflow-x-auto">
-        <div className="inline-flex space-x-0">
+        <div className="flex items-stretch space-x-0">
           {favorites.map(item => (
-            <div key={item.food.food_id} className="bg-white shadow p-4 w-[350px] flex-shrink-0">
-              
-              <h3 className="font-bold text-lg h-[30px] text-center">{item.groupedFood.name}</h3>
-              {item.food.name_sub && (
-                <p className="text-sm text-gray-800 text-center mb-3">{item.food.name_sub}</p>
-              )}
+            <div key={item.food.food_id} className="flex flex-col bg-white shadow p-4 w-[350px] flex-shrink-0">
+
+              <div className={`${hasNameSub ? "min-h-[60px]" : "min-h-[40px]"} bg-white`}>
+                <h3 className="font-bold text-lg h-[30px] text-center">{item.groupedFood.name}</h3>
+                {item.food.name_sub && (
+                  <p className="text-sm text-gray-800 text-center mb-3">{item.food.name_sub}</p>
+                )}
+              </div>
 
               <img
                 src={`/images/${item.food.imgsrc}.png`}
@@ -51,6 +59,7 @@ export default function ComparePage({ favorites, toggleFavorite, onClose, nutrie
               activeFood={item}
               nutrientAvg={nutrientAvg}
               nutrientMedian={nutrientMedian}
+              maxVariantsLength={maxVariantsLength}
               />
 
               <div className="mt-3 text-sm">
