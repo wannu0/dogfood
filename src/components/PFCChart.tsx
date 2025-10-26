@@ -81,7 +81,9 @@ export default function PFCChart({
       {note && (
         <p className="text-xs text-red-600 text-right">{note}</p>
       )}
+      {/* 
       <p className="text-cardBaseFont_pale text-xs text-right">Dry Matter Basis</p>
+      */}
     </div>
   );
 }

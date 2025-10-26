@@ -69,12 +69,12 @@ export default function FoodDetailModal({activeFood,nutrientAvg,nutrientMedian, 
                 {/*
                 <NutrientChart nutrients={nutrientData} averages={nutrientAvg} medians={nutrientMedian}/>
                 */}
-                <div className="text-center bg-gray-200">
-                    <div>{food.nutrients.protein}</div>
-                    <div>{food.nutrients.fat}</div>
-                    <div>{food.nutrients.fiber}</div>
-                    <div>{food.nutrients.ash}</div>
-                    <div>{food.nutrients.water}</div>
+                <div className="text-center pt-3 divide-dotted divide-y divide-underLineColor">
+                    <div className="flex"><span className="w-[30%] text-sm">タンパク質</span><span className="flex-1">{food.nutrients.protein}</span></div>
+                    <div className="flex"><span className="w-[30%] text-sm">脂質</span><span className="flex-1">{food.nutrients.fat}</span></div>
+                    <div className="flex"><span className="w-[30%] text-sm">粗繊維</span><span className="flex-1">{food.nutrients.fiber}</span></div>
+                    <div className="flex"><span className="w-[30%] text-sm">灰分</span><span className="flex-1">{food.nutrients.ash === 0 ? `記載なし`:`${food.nutrients.ash}`}</span></div>
+                    <div className="flex"><span className="w-[30%] text-sm">水分</span><span className="flex-1">{food.nutrients.water === 0 ? `記載なし`:`${food.nutrients.water}`}</span></div>
                 </div>
             </div>
             

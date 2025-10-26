@@ -25,7 +25,7 @@ export default function ComparePage({ favorites, toggleFavorite, onClose, nutrie
     );
   }
 
-  // 事前処理
+  // タイトル部分の高さ、パッケージバリエーションの高さを事前に処理
   const hasNameSub = favorites.some(item => item.food.name_sub);
   const maxVariantsLength = Math.max(...favorites.map(item => item.food.variants.length));
   console.log(maxVariantsLength);
@@ -62,12 +62,32 @@ export default function ComparePage({ favorites, toggleFavorite, onClose, nutrie
               maxVariantsLength={maxVariantsLength}
               />
 
+              {/* カロリー、原産国 */}
               <div className="mt-3 text-sm">
                 <p>100gあたり: {item.food.kcal} kcal</p>
                 <p>原産国：{item.food.country || '情報なし'}</p>
               </div>
 
+              <div className="space-y-2 text-sm border border-borderBeige mt-2 p-2 rounded">
+                  <p>
+                      <strong>原材料</strong>
+                  </p>
+                  <div className="ml-3 mr-3 text-xs">{item.food.ingredients || "情報なし"}
+                      {item.food.note && (
+                          <div className="text-xs bg-mordalSubInfo p-2 mt-1">{item. food.note}</div>
+                      )}
+                  </div>
+              </div>
 
+              {/* 詳細ボタン */}
+              <div className='my-3 text-center'>
+                  <button
+                  className="ml-4 px-6 py-2 text-sm bg-buttonBG text-cardBaseFont
+                  hover:bg-buttonBG/70 transition-all border-none focus:outline-none"
+                  >
+                      詳しく見る
+                  </button>
+              </div> 
             </div>
           ))}
         </div>

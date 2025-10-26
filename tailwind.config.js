@@ -30,6 +30,8 @@ export default {
 			sliderColor: '#312821',
 			sliderColor_pale: '#78716B',
 			contentsBgColor : '#D0D0D0',
+			underLineColor : '#D0D0D0',
+			buttonBG:'#CFC8C2',
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
   			card: {
